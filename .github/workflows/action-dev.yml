@@ -1,0 +1,85 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Version bump
+        run: |
+          npm version patch -m "Version bump to %s"
+          git config user.email "ibadsiddiqui01@outlook.com"
+          git config user.name "ibad siddiqui"
+          git push --follow-tags
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    if: github.repository == 'SeekInvest/BackendNodeJS'
+    env:
+      IMAGE_NAME: techlabscc/seekinvest-backend:dev-stable
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: '.env.development.local'
+          envkey_ENVIRONMENT: development
+
+          # Stripe
+          envkey_STRIPE_SECRET_KEY: ${{secrets.DEV_STRIPE_SECRET_KEY}}
+          envkey_STRIPE_CHECKOUT_CALLBACK_URL: ${{secrets.DEV_STRIPE_CHECKOUT_CALLBACK_URL}}
+          envkey_STRIPE_CHECKOUT_COMPLETE_BILLING_SIGNING_SECRET: ${{secrets.DEV_STRIPE_CHECKOUT_COMPLETE_BILLING_SIGNING_SECRET}}
+          envkey_STRIPE_PRODUCT_ID_FOR_MONTHLY_SUBSCRIPTION: ${{secrets.DEV_STRIPE_PRODUCT_ID_FOR_MONTHLY_SUBSCRIPTION}}
+          envkey_STRIPE_PRODUCT_ID_FOR_YEARLY_SUBSCRIPTION: ${{secrets.DEV_STRIPE_PRODUCT_ID_FOR_YEARLY_SUBSCRIPTION}}
+
+          # Storage
+          envkey_ACCOUNT_KEY: ${{secrets.ACCOUNT_KEY}}
+          envkey_ACCOUNT_NAME: ${{secrets.ACCOUNT_NAME}}
+          envkey_CONTAINER_NAME: ${{secrets.CONTAINER_NAME}}
+
+          # AUTH0
+          envkey_AUTH0_DOMAIN: ${{secrets.DEV_AUTH0_DOMAIN}}
+          envkey_AUTH0_CLIENT_ID: ${{secrets.DEV_AUTH0_CLIENT_ID}}
+          envkey_AUTH0_CLIENT_SECRET: ${{secrets.DEV_AUTH0_CLIENT_SECRET}}
+          envkey_AUTH0_USER_PASSWORD: ${{ secrets.DEV_AUTH0_USER_PASSWORD }}
+          envkey_AUTH0_CONNECTION_ID: ${{ secrets.DEV_AUTH0_CONNECTION_ID }}
+
+          # DATABASE
+          envkey_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+
+          # LOG
+          envkey_LOG_FORMAT: ${{ env.LOG_FORMAT }}
+          envkey_LOG_DIR: ${{ env.LOG_DIR }}
+
+          # SENTRY
+          envkey_SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+          # CORS
+          envkey_ORIGIN: ${{ env.ORIGIN }}
+
+          envkey_CREDENTIALS: ${{ env.CREDENTIALS }}
+
+          # PORT
+          envkey_PORT: 3000
+
+      - name: Build image
+        run: docker build . -f ./Dockerfile.dev -t ${{ env.IMAGE_NAME }}
+
+      - name: Push Image
+        run: docker push ${{ env.IMAGE_NAME }}
