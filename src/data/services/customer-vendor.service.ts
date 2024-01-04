@@ -2,12 +2,14 @@ import { Service } from 'typedi';
 import database from '@config/database';
 import { ExtendedCustomerVendorDto } from '@data/dtos/auth/customer-vendor.dto';
 import { USER_TYPES } from '@prisma/client';
-import { CustomerPhoneDto, CustomerPhonesDto } from '@data/dtos/users/customer-phones.dto';
+import { CustomerPhoneDto, CustomerPhonesDto } from '@data/dtos/users/customer-vendor-phones.dto';
+import { CustomerAddressDto, CustomerAddresssDto } from '@data/dtos/users/customer-vendor-addresses.dto';
 
 @Service()
 export class CustomerVendorService {
   public users = database.instance.users;
   public phones = database.instance.phones;
+  public addresses = database.instance.addresses;
 
   public async create(data: ExtendedCustomerVendorDto) {
     const user = await this.users.create({
@@ -117,6 +119,52 @@ export class CustomerVendorService {
     });
     return {
       updatedphone,
+    };
+  }
+  //Addresses
+  public async createAddress(data: CustomerAddresssDto[]) {
+    const createdAddress = await this.addresses.createMany({
+      data: data.map(item => item),
+      skipDuplicates: true,
+    });
+    return {
+      createdAddress,
+    };
+  }
+
+  public async getAddressById(id: number) {
+    const address = await this.addresses.findFirst({
+      where: {
+        id,
+      },
+    });
+    return {
+      address,
+    };
+  }
+
+  public async deleteAddressById(id: number) {
+    const address = await this.addresses.delete({
+      where: {
+        id,
+      },
+    });
+    return {
+      address,
+    };
+  }
+  public async updateAddress(id: number, data: CustomerAddressDto) {
+    const updatedAddress = await this.addresses.update({
+      where: {
+        id,
+      },
+      data: {
+        address: data.address,
+        country: data.country,
+      },
+    });
+    return {
+      updatedAddress,
     };
   }
 }

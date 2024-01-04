@@ -1,15 +1,15 @@
 import { Inject, Service } from 'typedi';
 import { HttpResponse } from '@data/res/http_response';
 import { CustomerVendorService } from '@data/services/customer-vendor.service';
-import { CustomerPhoneDto } from '@data/dtos/users/customer-phones.dto';
+import { CustomerPhonesDto } from '@data/dtos/users/customer-vendor-phones.dto';
 
 @Service()
-export class CustomerUpdatePhoneUsecase {
+export class VendorCreatePhonesUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(id: string, data: CustomerPhoneDto) {
-    const result = await this.customerVendor.updatePhone(Number(id), data);
+  public async call(data: CustomerPhonesDto[]) {
+    const result = await this.customerVendor.createPhones(data);
     return new HttpResponse(result, false);
   }
 }
