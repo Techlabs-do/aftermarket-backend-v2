@@ -48,4 +48,15 @@ export class CustomerVendorService {
       user,
     };
   }
+
+  public async delete(id: number) {
+    const user = await this.users.delete({
+      where: {
+        id,
+      },
+    });
+    return {
+      user,
+    };
+  }
 }
