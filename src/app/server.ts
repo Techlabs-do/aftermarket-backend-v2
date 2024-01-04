@@ -5,6 +5,6 @@ import { UserController } from '@infrastructure/controllers/users.controller';
 
 ValidateEnv();
 
-const app = new App([AuthController, UserController]);
+const app = new App([UserController, AuthController]);
 
 app.listen();
