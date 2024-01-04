@@ -10,10 +10,13 @@ import jwt from 'jsonwebtoken';
 import { AuthService } from '@data/services/auth.service';
 import { Request } from 'express';
 import { HttpException } from '@data/exceptions/http_exception';
+import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
+import { AuthForgetPasswordUseCase } from '@domain/usecases/auth/forget_password';
 
 @JsonController('/auth')
 export class AuthController {
   public authSignUpUseCase = Container.get(AuthSignupUsecase);
+  public authForgetPasswordUseCase = Container.get(AuthForgetPasswordUseCase);
   public authServices = Container.get(AuthService);
 
   @Post('/signup')
@@ -21,7 +24,6 @@ export class AuthController {
   @HttpCode(201)
   async signUpByEmail(@Body() userData: SignupDto, @Req() req: Request) {
     const { headers } = req;
-    // if(headers.secret-key)
     if (!('secret-key' in headers) && headers['secret-key'] !== SECRET_KEY_HEADER) {
       throw new HttpException(400, 'UnAuthorized Access');
     }
@@ -48,5 +50,16 @@ export class AuthController {
         });
       })(req, res);
     });
+  }
+
+  @Post('/forgetPassword')
+  @UseBefore(ValidationMiddleware(SignupDto))
+  @HttpCode(201)
+  async forgetPassword(@Body() userData: ForgotPasswordDto, @Req() req: Request) {
+    const { headers } = req;
+    if (!('secret-key' in headers) && headers['secret-key'] !== SECRET_KEY_HEADER) {
+      throw new HttpException(400, 'UnAuthorized Access');
+    }
+    return await this.authForgetPasswordUseCase.call(userData);
   }
 }

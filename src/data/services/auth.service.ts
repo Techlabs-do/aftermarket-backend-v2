@@ -3,6 +3,7 @@ import { SignupDto } from '@data/dtos/auth/signup.dto';
 import { HttpException } from '@data/exceptions/http_exception';
 import database from '@config/database';
 import bcrypt from 'bcrypt';
+import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
 
 @Service()
 export class AuthService {
@@ -38,18 +39,30 @@ export class AuthService {
     }
   }
 
-  //Login user
-  // public async loginUser(body: LoginDto) {
-  //   try {
-  //     return await this.authentication.oauth.passwordGrant({
-  //       username: body.email,
-  //       password: body.password,
-  //       realm: 'Username-Password-Authentication',
-  //       client_id: AUTH0_CLIENT_ID,
-  //       client_secret: AUTH0_CLIENT_SECRET,
-  //     });
-  //   } catch (error) {
-  //     throw new Error(error.message ?? 'Failed to login');
-  //   }
-  // }
+  public async resetPassword(userData: ForgotPasswordDto) {
+    try {
+      const passwordHash = await bcrypt.hash(userData.password, 10);
+
+      const user = await this.user.findFirst({
+        where: {
+          email: userData.email,
+        },
+      });
+
+      if (user) {
+        await this.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: passwordHash,
+          },
+        });
+      }
+      return 'Password Updated';
+    } catch (error) {
+      const err = error as any;
+      throw new HttpException(err.statusCode || 500, err.message);
+    }
+  }
 }
