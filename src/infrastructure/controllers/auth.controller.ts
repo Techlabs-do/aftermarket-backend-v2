@@ -53,7 +53,7 @@ export class AuthController {
   }
 
   @Post('/forgetPassword')
-  @UseBefore(ValidationMiddleware(SignupDto))
+  @UseBefore(ValidationMiddleware(ForgotPasswordDto))
   @HttpCode(201)
   async forgetPassword(@Body() userData: ForgotPasswordDto, @Req() req: Request) {
     const { headers } = req;
