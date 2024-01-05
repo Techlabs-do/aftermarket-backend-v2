@@ -1,12 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 export class CustomerPhoneDto {
   @IsNotEmpty()
   @IsString()
   readonly number: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   readonly contact_person: string;
 }
 
@@ -16,7 +16,7 @@ export class VendorPhoneDto {
   readonly number: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   readonly contact_person: string;
 }
 export class CreateFrameworksDto {
@@ -27,10 +27,6 @@ export class CreateFrameworksDto {
   @IsNotEmpty()
   @IsString()
   readonly contact_person: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  readonly user_id: number;
 }
 
 export class CustomerPhonesDto {

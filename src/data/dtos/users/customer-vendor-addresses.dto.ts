@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 export class CustomerAddressDto {
   @IsNotEmpty()
   @IsString()
@@ -27,10 +27,6 @@ export class CreateFrameworksDto {
   @IsNotEmpty()
   @IsString()
   readonly country: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  readonly user_id: number;
 }
 
 export class CustomerAddresssDto {

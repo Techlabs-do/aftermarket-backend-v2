@@ -17,11 +17,18 @@ export class ProductService {
       where: {
         id,
       },
+      include: {
+        product_images: true,
+      },
     });
     return product;
   }
   public async getAllProducts() {
-    const products = await this.products.findMany({});
+    const products = await this.products.findMany({
+      include: {
+        product_images: true,
+      },
+    });
     return products;
   }
   public async deleteById(id: number) {
