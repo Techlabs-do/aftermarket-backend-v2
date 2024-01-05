@@ -109,9 +109,7 @@ export class CustomerVendorService {
       data: data.map(item => item),
       skipDuplicates: true,
     });
-    return {
-      createdAddress,
-    };
+    return createdAddress;
   }
 
   public async getAddressById(id: number) {
@@ -120,9 +118,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      address,
-    };
+    return address;
   }
 
   public async deleteAddressById(id: number) {
@@ -131,9 +127,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      address,
-    };
+    return address;
   }
   public async updateAddress(id: number, data: CustomerAddressDto) {
     const updatedAddress = await this.addresses.update({
@@ -145,8 +139,6 @@ export class CustomerVendorService {
         country: data.country,
       },
     });
-    return {
-      updatedAddress,
-    };
+    return updatedAddress;
   }
 }

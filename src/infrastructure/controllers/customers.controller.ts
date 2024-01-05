@@ -104,21 +104,21 @@ export class CustomerController {
   @Get('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async getAddressById(@Param('id') id: string) {
+  async getAddressById(@Param('id') id: number) {
     return await this.customerGetAddressUsecase.call(id);
   }
 
   @Delete('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async deleteAddressById(@Param('id') id: string) {
+  async deleteAddressById(@Param('id') id: number) {
     return await this.customerDeleteAddressUsecase.call(id);
   }
 
   @Put('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async updateAddressById(@Param('id') id: string, @Body() data: CustomerAddressDto) {
+  async updateAddressById(@Param('id') id: number, @Body() data: CustomerAddressDto) {
     return await this.customerUpdateAddressUsecase.call(id, data);
   }
 }
