@@ -29,9 +29,7 @@ export class ProductService {
         product_images: true,
       },
     });
-    return {
-      products,
-    };
+    return products;
   }
   public async deleteById(id: number) {
     const deletedProduct = await this.products.delete({
