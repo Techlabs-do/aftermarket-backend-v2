@@ -43,4 +43,33 @@ export class ProductImage {
       },
     });
   }
+
+  public async checkIfExists(id: number, imageid: number) {
+    const existingProduct = await this.products.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    const existingProductImage = await this.productImage.findUnique({
+      where: {
+        id: imageid,
+        product_id: id,
+      },
+    });
+
+    return !!existingProduct && !!existingProductImage;
+  }
+  public async update(id: number, url: string) {
+    const updateImage = await this.productImage.update({
+      where: {
+        id,
+      },
+      data: {
+        url,
+      },
+    });
+
+    return updateImage;
+  }
 }

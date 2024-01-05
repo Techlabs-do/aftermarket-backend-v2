@@ -9,6 +9,7 @@ import { ProductDeleteUsecase } from '@domain/usecases/product/delete';
 import { ProductUpdateUsecase } from '@domain/usecases/product/update';
 import { ProductImagesCreateUsecase } from '@domain/usecases/product/images/create';
 import { ProductImagesDeleteUsecase } from '@domain/usecases/product/images/delete';
+import { ProductImagesUpdateUsecase } from '@domain/usecases/product/images/update';
 
 @JsonController('/product')
 export class ProductController {
@@ -20,6 +21,7 @@ export class ProductController {
   //ProductImages
   public productImagesCreateUsecase = Container.get(ProductImagesCreateUsecase);
   public productImagesDeleteUsecase = Container.get(ProductImagesDeleteUsecase);
+  public productImagesUpdateUsecase = Container.get(ProductImagesUpdateUsecase);
 
   @Post('/')
   @UseBefore(ValidationMiddleware(ProductDto))
@@ -69,5 +71,12 @@ export class ProductController {
   @HttpCode(200)
   async deleteImage(@Param('id') id: string, @Param('imageid') imageid: string) {
     return await this.productImagesDeleteUsecase.call(id, imageid);
+  }
+
+  @Put('/:id/image/:imageid')
+  @Authorized()
+  @HttpCode(200)
+  async updateImage(@Param('id') id: string, @Param('imageid') imageid: string, @UploadedFile('profile') file: Express.Multer.File) {
+    return await this.productImagesUpdateUsecase.call(id, imageid, file);
   }
 }

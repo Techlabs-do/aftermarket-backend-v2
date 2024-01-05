@@ -21,6 +21,6 @@ export class ProductImagesCreateUsecase {
         return new HttpResponse(result, false);
       }
     }
-    return new HttpResponse('No Image Found', false);
+    return new HttpResponse('No Image Found', true);
   }
 }
