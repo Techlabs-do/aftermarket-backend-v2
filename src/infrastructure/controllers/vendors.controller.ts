@@ -75,61 +75,61 @@ export class VendorController {
     return await this.vendorDeleteUsecase.call(id);
   }
 
-  @Post('/phones')
+  @Post('/:userId/phones')
   @UseBefore(ValidationMiddleware(VendorPhonesDto))
   @Authorized()
   @HttpCode(201)
-  async createPhones(@Body() data: VendorPhonesDto[]) {
-    return await this.vendorCreatePhonesUsecase.call(data);
+  async createPhones(@Param('userId') userId: number, @Body() data: VendorPhonesDto[]) {
+    return await this.vendorCreatePhonesUsecase.call(data, userId);
   }
 
-  @Get('/phone/:id')
+  @Get('/:userId/phone/:id')
   @Authorized()
   @HttpCode(200)
-  async getPhoneById(@Param('id') id: number) {
-    return await this.vendorGetPhoneUsecase.call(id);
+  async getPhoneById(@Param('userId') userId: number, @Param('id') id: number) {
+    return await this.vendorGetPhoneUsecase.call(id, userId);
   }
 
-  @Delete('/phone/:id')
+  @Delete('/:userId/phone/:id')
   @Authorized()
   @HttpCode(200)
-  async deletePhoneById(@Param('id') id: number) {
-    return await this.vendorDeletePhoneUsecase.call(id);
+  async deletePhoneById(@Param('userId') userId: number, @Param('id') id: number) {
+    return await this.vendorDeletePhoneUsecase.call(id, userId);
   }
 
-  @Put('/phone/:id')
+  @Put('/:userId/phone/:id')
   @Authorized()
   @HttpCode(200)
-  async updatePhoneById(@Param('id') id: number, @Body() data: VendorPhoneDto) {
-    return await this.vendorUpdatePhoneUsecase.call(id, data);
+  async updatePhoneById(@Param('userId') userId: number, @Param('id') id: number, @Body() data: VendorPhoneDto) {
+    return await this.vendorUpdatePhoneUsecase.call(id, data, userId);
   }
 
-  @Post('/address')
+  @Post('/:userId/address')
   @UseBefore(ValidationMiddleware(VendorAddresssDto))
   @Authorized()
   @HttpCode(201)
-  async createAddress(@Body() data: VendorAddresssDto[]) {
-    return await this.vendorCreateAddresssUsecase.call(data);
+  async createAddress(@Param('userId') userId: number, @Body() data: VendorAddresssDto[]) {
+    return await this.vendorCreateAddresssUsecase.call(data, userId);
   }
 
-  @Get('/address/:id')
+  @Get('/:userId/address/:id')
   @Authorized()
   @HttpCode(200)
-  async getAddressById(@Param('id') id: number) {
-    return await this.vendorGetAddressUsecase.call(id);
+  async getAddressById(@Param('userId') userId: number, @Param('id') id: number) {
+    return await this.vendorGetAddressUsecase.call(id, userId);
   }
 
-  @Delete('/address/:id')
+  @Delete('/:userId/address/:id')
   @Authorized()
   @HttpCode(200)
-  async deleteAddressById(@Param('id') id: number) {
-    return await this.vendorDeleteAddressUsecase.call(id);
+  async deleteAddressById(@Param('userId') userId: number, @Param('id') id: number) {
+    return await this.vendorDeleteAddressUsecase.call(id, userId);
   }
 
-  @Put('/address/:id')
+  @Put('/:userId/address/:id')
   @Authorized()
   @HttpCode(200)
-  async updateAddressById(@Param('id') id: number, @Body() data: VendorAddressDto) {
-    return await this.vendorUpdateAddressUsecase.call(id, data);
+  async updateAddressById(@Param('userId') userId: number, @Param('id') id: number, @Body() data: VendorAddressDto) {
+    return await this.vendorUpdateAddressUsecase.call(id, data, userId);
   }
 }

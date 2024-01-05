@@ -66,17 +66,17 @@ export class ProductController {
     return await this.productImagesCreateUsecase.call(id, file);
   }
 
-  @Delete('/:id/image/:imageid')
+  @Delete('/:id/image/:imageId')
   @Authorized()
   @HttpCode(200)
-  async deleteImage(@Param('id') id: number, @Param('imageid') imageid: number) {
-    return await this.productImagesDeleteUsecase.call(id, imageid);
+  async deleteImage(@Param('id') id: number, @Param('imageId') imageId: number) {
+    return await this.productImagesDeleteUsecase.call(id, imageId);
   }
 
-  @Put('/:id/image/:imageid')
+  @Put('/:id/image/:imageId')
   @Authorized()
   @HttpCode(200)
-  async updateImage(@Param('id') id: number, @Param('imageid') imageid: number, @UploadedFile('profile') file: Express.Multer.File) {
-    return await this.productImagesUpdateUsecase.call(id, imageid, file);
+  async updateImage(@Param('id') id: number, @Param('imageId') imageId: number, @UploadedFile('profile') file: Express.Multer.File) {
+    return await this.productImagesUpdateUsecase.call(id, imageId, file);
   }
 }

@@ -8,8 +8,8 @@ export class CustomerCreateAddresssUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(data: CustomerAddresssDto[]) {
-    const result = await this.customerVendor.createAddress(data);
+  public async call(data: CustomerAddresssDto[], user_id: number) {
+    const result = await this.customerVendor.createAddress(data, user_id);
     return new HttpResponse(result, false);
   }
 }

@@ -7,8 +7,8 @@ export class VendorDeletePhoneUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(id: number) {
-    const result = await this.customerVendor.deletePhoneById(id);
+  public async call(id: number, user_id: number) {
+    const result = await this.customerVendor.deletePhoneById(id, user_id);
     return new HttpResponse(result, false);
   }
 }
