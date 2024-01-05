@@ -127,11 +127,11 @@ model ProductOptions {
 model Options {
   id              Int              @id @default(autoincrement())
   option          String
-  parent_id       Int
+  parent_id       Int?
   created_at      DateTime         @default(now())
   updated_at      DateTime         @default(now())
   options         Options[]        @relation("ParentOption")
-  parent          Options          @relation("ParentOption", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parent          Options?         @relation("ParentOption", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   product_options ProductOptions[]
 }
 
