@@ -37,19 +37,4 @@ export class AuthService {
       throw new HttpException(err.statusCode || 500, err.message);
     }
   }
-
-  //Login user
-  // public async loginUser(body: LoginDto) {
-  //   try {
-  //     return await this.authentication.oauth.passwordGrant({
-  //       username: body.email,
-  //       password: body.password,
-  //       realm: 'Username-Password-Authentication',
-  //       client_id: AUTH0_CLIENT_ID,
-  //       client_secret: AUTH0_CLIENT_SECRET,
-  //     });
-  //   } catch (error) {
-  //     throw new Error(error.message ?? 'Failed to login');
-  //   }
-  // }
 }
