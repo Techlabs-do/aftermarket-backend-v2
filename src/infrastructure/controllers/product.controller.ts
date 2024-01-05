@@ -62,21 +62,21 @@ export class ProductController {
   @Post('/:id/image')
   @Authorized()
   @HttpCode(201)
-  async productImage(@Param('id') id: string, @UploadedFile('profile') file?: Express.Multer.File) {
+  async productImage(@Param('id') id: number, @UploadedFile('profile') file?: Express.Multer.File) {
     return await this.productImagesCreateUsecase.call(id, file);
   }
 
   @Delete('/:id/image/:imageid')
   @Authorized()
   @HttpCode(200)
-  async deleteImage(@Param('id') id: string, @Param('imageid') imageid: string) {
+  async deleteImage(@Param('id') id: number, @Param('imageid') imageid: number) {
     return await this.productImagesDeleteUsecase.call(id, imageid);
   }
 
   @Put('/:id/image/:imageid')
   @Authorized()
   @HttpCode(200)
-  async updateImage(@Param('id') id: string, @Param('imageid') imageid: string, @UploadedFile('profile') file: Express.Multer.File) {
+  async updateImage(@Param('id') id: number, @Param('imageid') imageid: number, @UploadedFile('profile') file: Express.Multer.File) {
     return await this.productImagesUpdateUsecase.call(id, imageid, file);
   }
 }

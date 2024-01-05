@@ -7,8 +7,8 @@ export class ProductImagesDeleteUsecase {
   @Inject()
   productImage: ProductImage;
 
-  public async call(id: string, imageid: string) {
-    const result = await this.productImage.deleteById(Number(id), Number(imageid));
+  public async call(id: number, imageid: number) {
+    const result = await this.productImage.deleteById(id, imageid);
     return new HttpResponse(result, false);
   }
 }

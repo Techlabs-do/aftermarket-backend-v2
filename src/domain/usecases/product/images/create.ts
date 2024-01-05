@@ -9,12 +9,12 @@ export class ProductImagesCreateUsecase {
   @Inject()
   productImage: ProductImage;
 
-  public async call(id: string, file?: Express.Multer.File) {
+  public async call(id: number, file?: Express.Multer.File) {
     if (file) {
-      const UploadedFile = await uploadtoS3(file, Number(id));
+      const UploadedFile = await uploadtoS3(file, id);
       if (UploadedFile) {
         const inserteddata = {
-          product_id: Number(id),
+          product_id: id,
           url: `${BUCKET_ENDPOINT}/${BUCKET}/${UploadedFile}`,
         };
         const result = await this.productImage.create(inserteddata);

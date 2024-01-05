@@ -64,7 +64,7 @@ export class VendorController {
   @Put('/:id')
   @Authorized()
   @HttpCode(200)
-  async updateVendorById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
+  async updateVendorById(@Param('id') id: number, @Body() data: CustomerVendorDto) {
     return await this.vendorUpdateUsecase.call(id, { ...data, type: USER_TYPES.VENDORS });
   }
 

@@ -62,7 +62,7 @@ export class CustomerController {
   @Put('/:id')
   @Authorized()
   @HttpCode(200)
-  async updateCustomerById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
+  async updateCustomerById(@Param('id') id: number, @Body() data: CustomerVendorDto) {
     return await this.customerUpdateUsecase.call(id, { ...data, type: USER_TYPES.CUSTOMERS });
   }
 
