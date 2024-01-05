@@ -63,14 +63,14 @@ export class VendorController {
 
   @Get('/phone/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async getPhoneById(@Param('id') id: number) {
     return await this.vendorGetPhoneUsecase.call(id);
   }
 
   @Delete('/phone/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async deletePhoneById(@Param('id') id: number) {
     return await this.vendorDeletePhoneUsecase.call(id);
   }

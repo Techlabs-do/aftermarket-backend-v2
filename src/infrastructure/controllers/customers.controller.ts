@@ -63,14 +63,14 @@ export class CustomerController {
 
   @Get('/phone/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async getPhoneById(@Param('id') id: number) {
     return await this.customerGetPhoneUsecase.call(id);
   }
 
   @Delete('/phone/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async deletePhoneById(@Param('id') id: number) {
     return await this.customerDeletePhoneUsecase.call(id);
   }
