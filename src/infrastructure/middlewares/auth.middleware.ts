@@ -4,36 +4,25 @@ import { parseJwt } from '@infrastructure/common/jwt';
 import { UserService } from '@data/services/users.service';
 
 export const getAuthorization = req => {
-  const coockie = req.cookies['Authorization'];
-  if (coockie) return coockie;
-
-  const header = req.header('Authorization');
+  const header = req;
   if (header) return header.split('Bearer ')[1];
 
   return null;
 };
 
-export const AuthMiddleware = async (action: Action, roles: string[]): Promise<boolean> => {
+export const AuthMiddleware = async (action: Action): Promise<boolean> => {
   try {
     const req = action.request;
-    const Authorization = getAuthorization(req);
-
+    const Authorization = getAuthorization(req.headers.authorization);
     if (Authorization) {
-      const { id } = parseJwt(Authorization);
-      const user = await Container.get(UserService).findUserByIdWithRole(id);
+      const { sub } = parseJwt(Authorization);
+      const user = await Container.get(UserService).findUser(Number(sub));
       if (user) {
         action.request.user = user;
       }
-
       if (!action.request.user) return false;
 
-      if (action.request.user && !roles.length) return true;
-
-      if (roles.length > 0) {
-        return roles.includes(action.request.user.role);
-      }
-
-      return false;
+      return true;
     } else {
       return false;
     }
