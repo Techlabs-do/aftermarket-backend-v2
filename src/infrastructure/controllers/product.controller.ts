@@ -61,7 +61,7 @@ export class ProductController {
 
   @Post('/:id/image')
   @Authorized()
-  @HttpCode(200)
+  @HttpCode(201)
   async productImage(@Param('id') id: string, @UploadedFile('profile') file?: Express.Multer.File) {
     return await this.productImagesCreateUsecase.call(id, file);
   }

@@ -63,7 +63,7 @@ export class VendorController {
 
   @Put('/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async updateVendorById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
     return await this.vendorUpdateUsecase.call(id, { ...data, type: USER_TYPES.VENDORS });
   }
@@ -99,7 +99,7 @@ export class VendorController {
 
   @Put('/phone/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async updatePhoneById(@Param('id') id: number, @Body() data: VendorPhoneDto) {
     return await this.vendorUpdatePhoneUsecase.call(id, data);
   }
@@ -114,21 +114,21 @@ export class VendorController {
 
   @Get('/address/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async getAddressById(@Param('id') id: number) {
     return await this.vendorGetAddressUsecase.call(id);
   }
 
   @Delete('/address/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async deleteAddressById(@Param('id') id: number) {
     return await this.vendorDeleteAddressUsecase.call(id);
   }
 
   @Put('/address/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async updateAddressById(@Param('id') id: number, @Body() data: VendorAddressDto) {
     return await this.vendorUpdateAddressUsecase.call(id, data);
   }
