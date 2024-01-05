@@ -1,18 +1,21 @@
 import { Container } from 'typedi';
-import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import { LoginDto } from '@data/dtos/auth/login.dto';
 import { SignupDto } from '@data/dtos/auth/signup.dto';
-import { AuthService } from '@data/services/auth.service';
 import { JWT_SECRET, SECRET_KEY, SECRET_KEY_HEADER } from '@config/environments';
 import { AuthSignupUsecase } from '@domain/usecases/auth/signup_by_email';
 import { ValidationMiddleware } from '@infrastructure/middlewares/validation.middleware';
 import { JsonController, Body, Post, UseBefore, HttpCode, Req, Res } from 'routing-controllers';
+import { LoginDto } from '@data/dtos/auth/login.dto';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import { AuthService } from '@data/services/auth.service';
+import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
+import { AuthForgetPasswordUseCase } from '@domain/usecases/auth/forget_password';
 import { HeaderValidationMiddleware } from '@infrastructure/middlewares/header_validation.middleware';
 
 @JsonController('/auth')
 export class AuthController {
   public authSignUpUseCase = Container.get(AuthSignupUsecase);
+  public authForgetPasswordUseCase = Container.get(AuthForgetPasswordUseCase);
   public authServices = Container.get(AuthService);
 
   @Post('/signup')
@@ -43,5 +46,13 @@ export class AuthController {
         });
       })(req, res);
     });
+  }
+
+  @Post('/forget-password')
+  @UseBefore(HeaderValidationMiddleware(SECRET_KEY, 'Secret Key does not exist', SECRET_KEY_HEADER))
+  @UseBefore(ValidationMiddleware(ForgotPasswordDto))
+  @HttpCode(200)
+  forgetPassword(@Body() userData: ForgotPasswordDto) {
+    return this.authForgetPasswordUseCase.call(userData);
   }
 }

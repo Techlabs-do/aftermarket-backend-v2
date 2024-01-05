@@ -4,13 +4,12 @@ import { AuthService } from '@data/services/auth.service';
 import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
 
 @Service()
-export class AuthForgetPassswordUsecase {
+export class AuthForgetPasswordUseCase {
   @Inject()
   auth: AuthService;
 
   public async call(data: ForgotPasswordDto) {
-    const { email } = data;
-    const result = await this.auth.forgetPassword({ email });
+    const result = await this.auth.resetPassword(data);
     return new HttpResponse(result, false);
   }
 }
