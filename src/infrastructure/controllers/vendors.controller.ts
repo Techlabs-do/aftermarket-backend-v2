@@ -64,14 +64,14 @@ export class VendorController {
   @Put('/:id')
   @Authorized()
   @HttpCode(201)
-  async updateCustomerById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
+  async updateVendorById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
     return await this.vendorUpdateUsecase.call(id, { ...data, type: USER_TYPES.VENDORS });
   }
 
   @Delete('/:id')
   @Authorized()
   @HttpCode(200)
-  async deleteAssessment(@Param('id') id: number) {
+  async deleteVendor(@Param('id') id: number) {
     return await this.vendorDeleteUsecase.call(id);
   }
 
