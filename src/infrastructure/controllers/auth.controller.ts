@@ -1,17 +1,16 @@
 import { Container } from 'typedi';
 import { SignupDto } from '@data/dtos/auth/signup.dto';
+import { JWT_SECRET, SECRET_KEY, SECRET_KEY_HEADER } from '@config/environments';
 import { AuthSignupUsecase } from '@domain/usecases/auth/signup_by_email';
 import { ValidationMiddleware } from '@infrastructure/middlewares/validation.middleware';
 import { JsonController, Body, Post, UseBefore, HttpCode, Req, Res } from 'routing-controllers';
 import { LoginDto } from '@data/dtos/auth/login.dto';
 import passport from 'passport';
-import { JWT_SECRET, SECRET_KEY_HEADER } from '@config/environments';
 import jwt from 'jsonwebtoken';
 import { AuthService } from '@data/services/auth.service';
-import { Request } from 'express';
-import { HttpException } from '@data/exceptions/http_exception';
 import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
 import { AuthForgetPasswordUseCase } from '@domain/usecases/auth/forget_password';
+import { HeaderValidationMiddleware } from '@infrastructure/middlewares/header_validation.middleware';
 
 @JsonController('/auth')
 export class AuthController {
@@ -20,20 +19,17 @@ export class AuthController {
   public authServices = Container.get(AuthService);
 
   @Post('/signup')
+  @UseBefore(HeaderValidationMiddleware(SECRET_KEY, 'Secret Key does not exist', SECRET_KEY_HEADER))
   @UseBefore(ValidationMiddleware(SignupDto))
   @HttpCode(201)
-  async signUpByEmail(@Body() userData: SignupDto, @Req() req: Request) {
-    const { headers } = req;
-    if (!('secret-key' in headers) && headers['secret-key'] !== SECRET_KEY_HEADER) {
-      throw new HttpException(400, 'UnAuthorized Access');
-    }
+  async signUpByEmail(@Body() userData: SignupDto) {
     return await this.authSignUpUseCase.call(userData);
   }
 
   @Post('/login')
   @UseBefore(ValidationMiddleware(LoginDto))
   @HttpCode(200)
-  async login(@Body() userData: LoginDto, @Req() req: any, @Res() res: any) {
+  async login(@Req() req: any, @Res() res: any) {
     return new Promise((resolve, reject) => {
       passport.authenticate('local', { session: true }, (err, user) => {
         if (err || !user) {
@@ -52,14 +48,11 @@ export class AuthController {
     });
   }
 
-  @Post('/forgetPassword')
+  @Post('/forget-password')
+  @UseBefore(HeaderValidationMiddleware(SECRET_KEY, 'Secret Key does not exist', SECRET_KEY_HEADER))
   @UseBefore(ValidationMiddleware(ForgotPasswordDto))
-  @HttpCode(201)
-  async forgetPassword(@Body() userData: ForgotPasswordDto, @Req() req: Request) {
-    const { headers } = req;
-    if (!('secret-key' in headers) && headers['secret-key'] !== SECRET_KEY_HEADER) {
-      throw new HttpException(400, 'UnAuthorized Access');
-    }
-    return await this.authForgetPasswordUseCase.call(userData);
+  @HttpCode(200)
+  forgetPassword(@Body() userData: ForgotPasswordDto) {
+    return this.authForgetPasswordUseCase.call(userData);
   }
 }
