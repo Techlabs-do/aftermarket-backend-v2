@@ -30,9 +30,7 @@ export class CustomerVendorService {
         website: data.website,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async get(id: number) {
