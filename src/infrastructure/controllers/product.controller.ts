@@ -47,7 +47,7 @@ export class ProductController {
 
   @Put('/:id')
   @Authorized()
-  @HttpCode(201)
+  @HttpCode(200)
   async updatePhoneById(@Param('id') id: number, @Body() data: ProductDto) {
     return await this.productUpdateUsecase.call(id, data);
   }
