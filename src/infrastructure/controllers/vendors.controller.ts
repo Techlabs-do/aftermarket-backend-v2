@@ -30,7 +30,7 @@ export class VendorController {
   @Get('/:id')
   @Authorized()
   @HttpCode(200)
-  async getVendor(@Param('id') id: string) {
+  async getVendor(@Param('id') id: number) {
     return await this.vendorGetUsecase.call(id);
   }
 
