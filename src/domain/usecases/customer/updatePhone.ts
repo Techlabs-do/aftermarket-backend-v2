@@ -8,8 +8,8 @@ export class CustomerUpdatePhoneUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(id: string, data: CustomerPhoneDto) {
-    const result = await this.customerVendor.updatePhone(Number(id), data);
+  public async call(id: number, data: CustomerPhoneDto) {
+    const result = await this.customerVendor.updatePhone(id, data);
     return new HttpResponse(result, false);
   }
 }
