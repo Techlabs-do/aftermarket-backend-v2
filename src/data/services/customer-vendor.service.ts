@@ -13,9 +13,7 @@ export class CustomerVendorService {
     const user = await this.users.create({
       data,
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async get(id: number) {
@@ -28,9 +26,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllCustomers() {
@@ -43,9 +39,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllVendors() {
@@ -58,9 +52,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async delete(id: number) {
@@ -69,9 +61,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
   //Phones//
   public async createPhones(data: CustomerPhonesDto[]) {
