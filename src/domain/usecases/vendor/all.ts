@@ -3,12 +3,12 @@ import { HttpResponse } from '@data/res/http_response';
 import { CustomerVendorService } from '@data/services/customer-vendor.service';
 
 @Service()
-export class CustomerGetUsecase {
+export class VendorListUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(id: number) {
-    const result = await this.customerVendor.get(id);
+  public async call() {
+    const result = await this.customerVendor.getAllVendors();
     return new HttpResponse(result, false);
   }
 }

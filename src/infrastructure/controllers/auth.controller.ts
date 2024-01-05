@@ -40,7 +40,7 @@ export class AuthController {
             return reject({ message: 'Login error' });
           }
 
-          const token = jwt.sign({ sub: user.id }, JWT_SECRET, { expiresIn: '1h' });
+          const token = jwt.sign({ sub: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
           resolve({ token });
         });

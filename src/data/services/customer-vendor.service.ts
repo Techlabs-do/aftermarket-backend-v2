@@ -11,9 +11,7 @@ export class CustomerVendorService {
     const user = await this.users.create({
       data,
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async get(id: number) {
@@ -22,9 +20,7 @@ export class CustomerVendorService {
         id: id,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllCustomers() {
@@ -33,9 +29,7 @@ export class CustomerVendorService {
         type: USER_TYPES.CUSTOMERS,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllVendors() {
@@ -44,8 +38,15 @@ export class CustomerVendorService {
         type: USER_TYPES.VENDORS,
       },
     });
-    return {
-      user,
-    };
+    return user;
+  }
+
+  public async delete(id: number) {
+    const user = await this.users.delete({
+      where: {
+        id,
+      },
+    });
+    return user;
   }
 }
