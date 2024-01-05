@@ -1,16 +1,24 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
-
-export class VendorPhoneDto {
+export class CustomerPhoneDto {
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   readonly number: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   readonly contact_person: string;
 }
 
+export class VendorPhoneDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly number: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  readonly contact_person: string;
+}
 export class CreateFrameworksDto {
   @IsNotEmpty()
   @IsString()
@@ -23,6 +31,13 @@ export class CreateFrameworksDto {
   @IsNotEmpty()
   @IsNumber()
   readonly user_id: number;
+}
+
+export class CustomerPhonesDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateFrameworksDto)
+  readonly data: CreateFrameworksDto[];
 }
 
 export class VendorPhonesDto {

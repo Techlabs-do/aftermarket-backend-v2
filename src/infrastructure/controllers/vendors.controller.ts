@@ -3,15 +3,20 @@ import { JsonController, Get, HttpCode, Authorized, Post, UseBefore, Body, Param
 import { USER_TYPES } from '@prisma/client';
 import { ValidationMiddleware } from '@infrastructure/middlewares/validation.middleware';
 import { CustomerVendorDto } from '@data/dtos/auth/customer-vendor.dto';
-import { VendorGetUsecase } from '@domain/usecases/vendor/get';
-import { VendorListUsecase } from '@domain/usecases/vendor/all';
-import { VendorCreateUsecase } from '@domain/usecases/vendor/create';
-import { VendorDeleteUsecase } from '@domain/usecases/vendor/delete';
-import { VendorPhoneDto, VendorPhonesDto } from '@data/dtos/users/vendor-phones.dto';
-import { VendorUpdatePhoneUsecase } from '@domain/usecases/vendor/updatePhone';
-import { VendorDeletePhoneUsecase } from '@domain/usecases/vendor/deletePhone';
-import { VendorGetPhoneUsecase } from '@domain/usecases/vendor/getPhone';
-import { VendorCreatePhonesUsecase } from '@domain/usecases/vendor/createPhones';
+import { VendorGetUsecase } from '@domain/usecases/vendor/user/get';
+import { VendorListUsecase } from '@domain/usecases/vendor/user/all';
+import { VendorCreateUsecase } from '@domain/usecases/vendor/user/create';
+import { VendorDeleteUsecase } from '@domain/usecases/vendor/user/delete';
+import { VendorUpdatePhoneUsecase } from '@domain/usecases/vendor/phone/updatePhone';
+import { VendorDeletePhoneUsecase } from '@domain/usecases/vendor/phone/deletePhone';
+import { VendorGetPhoneUsecase } from '@domain/usecases/vendor/phone/getPhone';
+import { VendorCreatePhonesUsecase } from '@domain/usecases/vendor/phone/createPhones';
+import { VendorCreateAddresssUsecase } from '@domain/usecases/vendor/address/createAddress';
+import { VendorGetAddressUsecase } from '@domain/usecases/vendor/address/getAddress';
+import { VendorDeleteAddressUsecase } from '@domain/usecases/vendor/address/deleteAddress';
+import { VendorUpdateAddressUsecase } from '@domain/usecases/vendor/address/updateAddress';
+import { VendorAddressDto, VendorAddresssDto } from '@data/dtos/users/customer-vendor-addresses.dto';
+import { VendorPhoneDto, VendorPhonesDto } from '@data/dtos/users/customer-vendor-phones.dto';
 
 @JsonController('/vendor')
 export class VendorController {
@@ -19,10 +24,18 @@ export class VendorController {
   public vendorGetUsecase = Container.get(VendorGetUsecase);
   public vendorListUsecase = Container.get(VendorListUsecase);
   public vendorDeleteUsecase = Container.get(VendorDeleteUsecase);
+
+  //Phones
   public vendorUpdatePhoneUsecase = Container.get(VendorUpdatePhoneUsecase);
   public vendorDeletePhoneUsecase = Container.get(VendorDeletePhoneUsecase);
   public vendorGetPhoneUsecase = Container.get(VendorGetPhoneUsecase);
   public vendorCreatePhonesUsecase = Container.get(VendorCreatePhonesUsecase);
+
+  //Address
+  public vendorCreateAddresssUsecase = Container.get(VendorCreateAddresssUsecase);
+  public vendorUpdateAddressUsecase = Container.get(VendorUpdateAddressUsecase);
+  public vendorGetAddressUsecase = Container.get(VendorGetAddressUsecase);
+  public vendorDeleteAddressUsecase = Container.get(VendorDeleteAddressUsecase);
 
   @Post('/')
   @UseBefore(ValidationMiddleware(CustomerVendorDto))
@@ -80,5 +93,34 @@ export class VendorController {
   @HttpCode(201)
   async updatePhoneById(@Param('id') id: number, @Body() data: VendorPhoneDto) {
     return await this.vendorUpdatePhoneUsecase.call(id, data);
+  }
+
+  @Post('/address')
+  @UseBefore(ValidationMiddleware(VendorAddresssDto))
+  @Authorized()
+  @HttpCode(201)
+  async createAddress(@Body() data: VendorAddresssDto[]) {
+    return await this.vendorCreateAddresssUsecase.call(data);
+  }
+
+  @Get('/address/:id')
+  @Authorized()
+  @HttpCode(201)
+  async getAddressById(@Param('id') id: number) {
+    return await this.vendorGetAddressUsecase.call(id);
+  }
+
+  @Delete('/address/:id')
+  @Authorized()
+  @HttpCode(201)
+  async deleteAddressById(@Param('id') id: number) {
+    return await this.vendorDeleteAddressUsecase.call(id);
+  }
+
+  @Put('/address/:id')
+  @Authorized()
+  @HttpCode(201)
+  async updateAddressById(@Param('id') id: number, @Body() data: VendorAddressDto) {
+    return await this.vendorUpdateAddressUsecase.call(id, data);
   }
 }

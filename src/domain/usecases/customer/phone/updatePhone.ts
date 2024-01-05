@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi';
 import { HttpResponse } from '@data/res/http_response';
 import { CustomerVendorService } from '@data/services/customer-vendor.service';
-import { CustomerPhoneDto } from '@data/dtos/users/customer-phones.dto';
+import { CustomerPhoneDto } from '@data/dtos/users/customer-vendor-phones.dto';
 
 @Service()
 export class CustomerUpdatePhoneUsecase {
