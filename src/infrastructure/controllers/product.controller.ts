@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import { JsonController, Get, HttpCode, Authorized, Post, UseBefore, Body, Param, Delete, Put, Req, UploadedFile } from 'routing-controllers';
+import { JsonController, Get, HttpCode, Authorized, Post, UseBefore, Body, Param, Delete, Put, UploadedFile } from 'routing-controllers';
 import { ValidationMiddleware } from '@infrastructure/middlewares/validation.middleware';
 import { ProductDto } from '@data/dtos/products/product.dto';
 import { ProductCreateUsecase } from '@domain/usecases/product/create';
