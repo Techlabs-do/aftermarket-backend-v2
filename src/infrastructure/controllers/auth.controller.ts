@@ -8,8 +8,6 @@ import { LoginDto } from '@data/dtos/auth/login.dto';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { AuthService } from '@data/services/auth.service';
-import { Request } from 'express';
-import { HttpException } from '@data/exceptions/http_exception';
 import { ForgotPasswordDto } from '@data/dtos/auth/forgot_password.dto';
 import { AuthForgetPasswordUseCase } from '@domain/usecases/auth/forget_password';
 import { HeaderValidationMiddleware } from '@infrastructure/middlewares/header_validation.middleware';
@@ -51,13 +49,10 @@ export class AuthController {
   }
 
   @Post('/forgetPassword')
+  @UseBefore(HeaderValidationMiddleware(SECRET_KEY, 'Secret Key does not exist', SECRET_KEY_HEADER))
   @UseBefore(ValidationMiddleware(ForgotPasswordDto))
   @HttpCode(201)
-  async forgetPassword(@Body() userData: ForgotPasswordDto, @Req() req: Request) {
-    const { headers } = req;
-    if (!('secret-key' in headers) && headers['secret-key'] !== SECRET_KEY_HEADER) {
-      throw new HttpException(400, 'UnAuthorized Access');
-    }
+  async forgetPassword(@Body() userData: ForgotPasswordDto) {
     return await this.authForgetPasswordUseCase.call(userData);
   }
 }
