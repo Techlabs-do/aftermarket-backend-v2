@@ -10,9 +10,7 @@ export class ProductService {
     const product = await this.products.create({
       data,
     });
-    return {
-      product,
-    };
+    return product;
   }
   public async getById(id: number) {
     const product = await this.products.findFirst({
@@ -20,15 +18,11 @@ export class ProductService {
         id,
       },
     });
-    return {
-      product,
-    };
+    return product;
   }
   public async getAllProducts() {
     const products = await this.products.findMany({});
-    return {
-      products,
-    };
+    return products;
   }
   public async deleteById(id: number) {
     const deletedProduct = await this.products.delete({
@@ -36,9 +30,7 @@ export class ProductService {
         id,
       },
     });
-    return {
-      deletedProduct,
-    };
+    return deletedProduct;
   }
   public async updateProduct(id: number, data: ProductDto) {
     const updatedProduct = await this.products.update({
@@ -47,8 +39,6 @@ export class ProductService {
       },
       data,
     });
-    return {
-      updatedProduct,
-    };
+    return updatedProduct;
   }
 }
