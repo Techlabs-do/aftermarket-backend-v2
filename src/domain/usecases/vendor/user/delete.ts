@@ -7,8 +7,8 @@ export class VendorDeleteUsecase {
   @Inject()
   customerVendor: CustomerVendorService;
 
-  public async call(id: string) {
-    const result = await this.customerVendor.delete(Number(id));
+  public async call(id: number) {
+    const result = await this.customerVendor.delete(id);
     return new HttpResponse(result, false);
   }
 }
