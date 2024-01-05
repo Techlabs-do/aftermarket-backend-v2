@@ -20,6 +20,23 @@ export class CustomerVendorService {
     };
   }
 
+  public async update(id: number, data: ExtendedCustomerVendorDto) {
+    const user = await this.users.update({
+      where: {
+        id,
+      },
+      data: {
+        company_name: data.company_name,
+        email: data.email,
+        type: data.type,
+        website: data.website,
+      },
+    });
+    return {
+      user,
+    };
+  }
+
   public async get(id: number) {
     const user = await this.users.findFirst({
       where: {

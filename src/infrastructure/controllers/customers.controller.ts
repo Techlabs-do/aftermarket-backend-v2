@@ -17,6 +17,7 @@ import { CustomerCreateAddresssUsecase } from '@domain/usecases/customer/address
 import { CustomerGetAddressUsecase } from '@domain/usecases/customer/address/getAddress';
 import { CustomerDeleteAddressUsecase } from '@domain/usecases/customer/address/deleteAddress';
 import { CustomerUpdateAddressUsecase } from '@domain/usecases/customer/address/updateAddress';
+import { CustomerUpdateUsecase } from '@domain/usecases/customer/user/update';
 
 @JsonController('/customer')
 export class CustomerController {
@@ -28,6 +29,7 @@ export class CustomerController {
   public customerGetUsecase = Container.get(CustomerGetUsecase);
   public customerListUsecase = Container.get(CustomerListUsecase);
   public customerDeleteUsecase = Container.get(CustomerDeleteUsecase);
+  public customerUpdateUsecase = Container.get(CustomerUpdateUsecase);
   //Phones
   public customerCreatePhonesUsecase = Container.get(CustomerCreatePhonesUsecase);
   public customerGetPhoneUsecase = Container.get(CustomerGetPhoneUsecase);
@@ -59,6 +61,13 @@ export class CustomerController {
   @HttpCode(200)
   async getAll() {
     return await this.customerListUsecase.call();
+  }
+
+  @Put('/:id')
+  @Authorized()
+  @HttpCode(201)
+  async updateCustomerById(@Param('id') id: string, @Body() data: CustomerVendorDto) {
+    return await this.customerUpdateUsecase.call(id, { ...data, type: this.userType });
   }
 
   @Delete('/:id')
