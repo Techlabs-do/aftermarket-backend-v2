@@ -21,10 +21,6 @@ import { CustomerUpdateUsecase } from '@domain/usecases/customer/user/update';
 
 @JsonController('/customer')
 export class CustomerController {
-  private userType;
-  constructor() {
-    this.userType = USER_TYPES.CUSTOMERS;
-  }
   public customerCreateUsecase = Container.get(CustomerCreateUsecase);
   public customerGetUsecase = Container.get(CustomerGetUsecase);
   public customerListUsecase = Container.get(CustomerListUsecase);
@@ -46,13 +42,13 @@ export class CustomerController {
   @Authorized()
   @HttpCode(201)
   async createCustomer(@Body() userData: CustomerVendorDto) {
-    return await this.customerCreateUsecase.call({ ...userData, type: this.userType });
+    return await this.customerCreateUsecase.call({ ...userData, type: USER_TYPES.CUSTOMERS });
   }
 
   @Get('/:id')
   @Authorized()
   @HttpCode(200)
-  async getCustomer(@Param('id') id: string) {
+  async getCustomer(@Param('id') id: number) {
     return await this.customerGetUsecase.call(id);
   }
 
@@ -73,7 +69,7 @@ export class CustomerController {
   @Delete('/:id')
   @Authorized()
   @HttpCode(200)
-  async deleteAssessment(@Param('id') id: string) {
+  async deleteAssessment(@Param('id') id: number) {
     return await this.customerDeleteUsecase.call(id);
   }
 
@@ -87,22 +83,22 @@ export class CustomerController {
 
   @Get('/phone/:id')
   @Authorized()
-  @HttpCode(201)
-  async getPhoneById(@Param('id') id: string) {
+  @HttpCode(200)
+  async getPhoneById(@Param('id') id: number) {
     return await this.customerGetPhoneUsecase.call(id);
   }
 
   @Delete('/phone/:id')
   @Authorized()
-  @HttpCode(201)
-  async deletePhoneById(@Param('id') id: string) {
+  @HttpCode(200)
+  async deletePhoneById(@Param('id') id: number) {
     return await this.customerDeletePhoneUsecase.call(id);
   }
 
   @Put('/phone/:id')
   @Authorized()
   @HttpCode(201)
-  async updatePhoneById(@Param('id') id: string, @Body() data: CustomerPhoneDto) {
+  async updatePhoneById(@Param('id') id: number, @Body() data: CustomerPhoneDto) {
     return await this.customerUpdatePhoneUsecase.call(id, data);
   }
 
@@ -117,21 +113,21 @@ export class CustomerController {
   @Get('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async getAddressById(@Param('id') id: string) {
+  async getAddressById(@Param('id') id: number) {
     return await this.customerGetAddressUsecase.call(id);
   }
 
   @Delete('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async deleteAddressById(@Param('id') id: string) {
+  async deleteAddressById(@Param('id') id: number) {
     return await this.customerDeleteAddressUsecase.call(id);
   }
 
   @Put('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async updateAddressById(@Param('id') id: string, @Body() data: CustomerAddressDto) {
+  async updateAddressById(@Param('id') id: number, @Body() data: CustomerAddressDto) {
     return await this.customerUpdateAddressUsecase.call(id, data);
   }
 }

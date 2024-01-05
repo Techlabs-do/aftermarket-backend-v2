@@ -7,8 +7,8 @@ export class ProductGetUsecase {
   @Inject()
   product: ProductService;
 
-  public async call(id: string) {
-    const result = await this.product.getById(Number(id));
+  public async call(id: number) {
+    const result = await this.product.getById(id);
     return new HttpResponse(result, false);
   }
 }

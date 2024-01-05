@@ -10,9 +10,7 @@ export class ProductService {
     const product = await this.products.create({
       data,
     });
-    return {
-      product,
-    };
+    return product;
   }
   public async getById(id: number) {
     const product = await this.products.findFirst({
@@ -23,9 +21,7 @@ export class ProductService {
         product_images: true,
       },
     });
-    return {
-      product,
-    };
+    return product;
   }
   public async getAllProducts() {
     const products = await this.products.findMany({
@@ -43,9 +39,7 @@ export class ProductService {
         id,
       },
     });
-    return {
-      deletedProduct,
-    };
+    return deletedProduct;
   }
   public async updateProduct(id: number, data: ProductDto) {
     const updatedProduct = await this.products.update({
@@ -54,8 +48,6 @@ export class ProductService {
       },
       data,
     });
-    return {
-      updatedProduct,
-    };
+    return updatedProduct;
   }
 }

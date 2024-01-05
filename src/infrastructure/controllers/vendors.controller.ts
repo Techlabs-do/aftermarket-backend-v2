@@ -21,10 +21,6 @@ import { VendorUpdateUsecase } from '@domain/usecases/vendor/user/update';
 
 @JsonController('/vendor')
 export class VendorController {
-  private userType;
-  constructor() {
-    this.userType = USER_TYPES.VENDORS;
-  }
   public vendorCreateUsecase = Container.get(VendorCreateUsecase);
   public vendorGetUsecase = Container.get(VendorGetUsecase);
   public vendorListUsecase = Container.get(VendorListUsecase);
@@ -48,13 +44,13 @@ export class VendorController {
   @Authorized()
   @HttpCode(201)
   async createVendor(@Body() userData: CustomerVendorDto) {
-    return await this.vendorCreateUsecase.call({ ...userData, type: this.userType });
+    return await this.vendorCreateUsecase.call({ ...userData, type: USER_TYPES.VENDORS });
   }
 
   @Get('/:id')
   @Authorized()
   @HttpCode(200)
-  async getVendor(@Param('id') id: string) {
+  async getVendor(@Param('id') id: number) {
     return await this.vendorGetUsecase.call(id);
   }
 
@@ -75,7 +71,7 @@ export class VendorController {
   @Delete('/:id')
   @Authorized()
   @HttpCode(200)
-  async deleteAssessment(@Param('id') id: string) {
+  async deleteAssessment(@Param('id') id: number) {
     return await this.vendorDeleteUsecase.call(id);
   }
 
@@ -89,22 +85,22 @@ export class VendorController {
 
   @Get('/phone/:id')
   @Authorized()
-  @HttpCode(201)
-  async getPhoneById(@Param('id') id: string) {
+  @HttpCode(200)
+  async getPhoneById(@Param('id') id: number) {
     return await this.vendorGetPhoneUsecase.call(id);
   }
 
   @Delete('/phone/:id')
   @Authorized()
-  @HttpCode(201)
-  async deletePhoneById(@Param('id') id: string) {
+  @HttpCode(200)
+  async deletePhoneById(@Param('id') id: number) {
     return await this.vendorDeletePhoneUsecase.call(id);
   }
 
   @Put('/phone/:id')
   @Authorized()
   @HttpCode(201)
-  async updatePhoneById(@Param('id') id: string, @Body() data: VendorPhoneDto) {
+  async updatePhoneById(@Param('id') id: number, @Body() data: VendorPhoneDto) {
     return await this.vendorUpdatePhoneUsecase.call(id, data);
   }
 
@@ -119,21 +115,21 @@ export class VendorController {
   @Get('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async getAddressById(@Param('id') id: string) {
+  async getAddressById(@Param('id') id: number) {
     return await this.vendorGetAddressUsecase.call(id);
   }
 
   @Delete('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async deleteAddressById(@Param('id') id: string) {
+  async deleteAddressById(@Param('id') id: number) {
     return await this.vendorDeleteAddressUsecase.call(id);
   }
 
   @Put('/address/:id')
   @Authorized()
   @HttpCode(201)
-  async updateAddressById(@Param('id') id: string, @Body() data: VendorAddressDto) {
+  async updateAddressById(@Param('id') id: number, @Body() data: VendorAddressDto) {
     return await this.vendorUpdateAddressUsecase.call(id, data);
   }
 }

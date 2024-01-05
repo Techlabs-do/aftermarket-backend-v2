@@ -34,7 +34,7 @@ export class ProductController {
   @Get('/:id')
   @Authorized()
   @HttpCode(200)
-  async getProduct(@Param('id') id: string) {
+  async getProduct(@Param('id') id: number) {
     return await this.productGetUsecase.call(id);
   }
 
@@ -48,14 +48,14 @@ export class ProductController {
   @Delete('/:id')
   @Authorized()
   @HttpCode(200)
-  async deleteProduct(@Param('id') id: string) {
+  async deleteProduct(@Param('id') id: number) {
     return await this.productDeleteUsecase.call(id);
   }
 
   @Put('/:id')
   @Authorized()
-  @HttpCode(201)
-  async updatePhoneById(@Param('id') id: string, @Body() data: ProductDto) {
+  @HttpCode(200)
+  async updatePhoneById(@Param('id') id: number, @Body() data: ProductDto) {
     return await this.productUpdateUsecase.call(id, data);
   }
 

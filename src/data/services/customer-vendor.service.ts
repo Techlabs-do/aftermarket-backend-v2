@@ -15,9 +15,7 @@ export class CustomerVendorService {
     const user = await this.users.create({
       data,
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async update(id: number, data: ExtendedCustomerVendorDto) {
@@ -47,9 +45,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllCustomers() {
@@ -62,9 +58,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async getAllVendors() {
@@ -77,9 +71,7 @@ export class CustomerVendorService {
         phones: true,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
 
   public async delete(id: number) {
@@ -88,9 +80,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      user,
-    };
+    return user;
   }
   //Phones//
   public async createPhones(data: CustomerPhonesDto[]) {
@@ -98,9 +88,7 @@ export class CustomerVendorService {
       data: data.map(item => item),
       skipDuplicates: true,
     });
-    return {
-      createdPhones,
-    };
+    return createdPhones;
   }
 
   public async getPhoneById(id: number) {
@@ -109,9 +97,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      phones,
-    };
+    return phones;
   }
 
   public async deletePhoneById(id: number) {
@@ -120,9 +106,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      phones,
-    };
+    return phones;
   }
   public async updatePhone(id: number, data: CustomerPhoneDto) {
     const updatedphone = await this.phones.update({
@@ -134,9 +118,7 @@ export class CustomerVendorService {
         number: data.number,
       },
     });
-    return {
-      updatedphone,
-    };
+    return updatedphone;
   }
   //Addresses
   public async createAddress(data: CustomerAddresssDto[]) {
@@ -144,9 +126,7 @@ export class CustomerVendorService {
       data: data.map(item => item),
       skipDuplicates: true,
     });
-    return {
-      createdAddress,
-    };
+    return createdAddress;
   }
 
   public async getAddressById(id: number) {
@@ -155,9 +135,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      address,
-    };
+    return address;
   }
 
   public async deleteAddressById(id: number) {
@@ -166,9 +144,7 @@ export class CustomerVendorService {
         id,
       },
     });
-    return {
-      address,
-    };
+    return address;
   }
   public async updateAddress(id: number, data: CustomerAddressDto) {
     const updatedAddress = await this.addresses.update({
@@ -180,8 +156,6 @@ export class CustomerVendorService {
         country: data.country,
       },
     });
-    return {
-      updatedAddress,
-    };
+    return updatedAddress;
   }
 }

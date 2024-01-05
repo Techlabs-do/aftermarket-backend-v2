@@ -7,8 +7,8 @@ export class ProductDeleteUsecase {
   @Inject()
   product: ProductService;
 
-  public async call(id: string) {
-    const result = await this.product.deleteById(Number(id));
+  public async call(id: number) {
+    const result = await this.product.deleteById(id);
     return new HttpResponse(result, false);
   }
 }
