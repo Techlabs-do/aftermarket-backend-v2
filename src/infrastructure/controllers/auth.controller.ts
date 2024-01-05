@@ -48,10 +48,10 @@ export class AuthController {
     });
   }
 
-  @Post('/forgetPassword')
+  @Post('/forget-password')
   @UseBefore(HeaderValidationMiddleware(SECRET_KEY, 'Secret Key does not exist', SECRET_KEY_HEADER))
   @UseBefore(ValidationMiddleware(ForgotPasswordDto))
-  @HttpCode(201)
+  @HttpCode(200)
   async forgetPassword(@Body() userData: ForgotPasswordDto) {
     return await this.authForgetPasswordUseCase.call(userData);
   }
