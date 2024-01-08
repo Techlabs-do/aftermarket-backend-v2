@@ -19,6 +19,7 @@ export class ProductService {
       },
       include: {
         product_has_images: true,
+        Product_has_options: true,
       },
     });
     return product;
@@ -27,6 +28,7 @@ export class ProductService {
     const products = await this.products.findMany({
       include: {
         product_has_images: true,
+        Product_has_options: true,
       },
     });
     return products;
