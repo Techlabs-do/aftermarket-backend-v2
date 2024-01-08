@@ -87,15 +87,15 @@ export class ProductController {
   }
 
   //ProductOptions
-  @Post('/:id/product-options')
+  @Post('/:productId/options')
   @UseBefore(ValidationMiddleware(ProductHasOptionsDto))
   @Authorized()
   @HttpCode(201)
-  async createProductOptions(@Param('id') id: number, @Body() data: ProductHasOptionsDto) {
-    return await this.productOptionsCreateUsecase.call(id, data);
+  async createProductOptions(@Param('productId') productId: number, @Body() data: ProductHasOptionsDto) {
+    return await this.productOptionsCreateUsecase.call(productId, data);
   }
 
-  @Delete('/:productId/product-option/:id')
+  @Delete('/:productId/option/:id')
   @Authorized()
   @HttpCode(200)
   async deleteProductOption(@Param('productId') productId: number, @Param('id') id: number) {
