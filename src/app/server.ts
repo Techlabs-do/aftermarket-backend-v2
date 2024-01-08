@@ -5,6 +5,7 @@ import { CabinsController } from '@infrastructure/controllers/cabins.controller'
 import { CustomerController } from '@infrastructure/controllers/customers.controller';
 import { OptionsController } from '@infrastructure/controllers/options.controller';
 import { ProductController } from '@infrastructure/controllers/product.controller';
+import { RecieptsController } from '@infrastructure/controllers/reciepts';
 import { RegionsController } from '@infrastructure/controllers/regions.controller';
 import { UserProductController } from '@infrastructure/controllers/userProducts.controller';
 import { UserController } from '@infrastructure/controllers/users.controller';
@@ -22,6 +23,7 @@ const app = new App([
   CabinsController,
   OptionsController,
   UserProductController,
+  RecieptsController,
 ]);
 
 app.listen();
