@@ -40,3 +40,8 @@ export class ExtendedProductHasOptionsDto extends ProductHasOptionsDto {
   @IsNumber()
   readonly product_id: number;
 }
+
+export class UserProductDto {
+  @IsString()
+  readonly code: string;
+}
