@@ -4,7 +4,7 @@ import { ProductImageDto } from '@data/dtos/products/product.dto';
 
 @Service()
 export class ProductImage {
-  public productImage = database.instance.productImages;
+  public productImage = database.instance.productHasImages;
   public products = database.instance.products;
 
   public async create(data: ProductImageDto) {
