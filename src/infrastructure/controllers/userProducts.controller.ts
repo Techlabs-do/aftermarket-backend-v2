@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import { JsonController, Get, HttpCode, Authorized, Post, UseBefore, Body, Param, Delete } from 'routing-controllers';
+import { JsonController, Get, HttpCode, Authorized, Post, UseBefore, Body, Param, Delete, Put } from 'routing-controllers';
 import { ValidationMiddleware } from '@infrastructure/middlewares/validation.middleware';
 import { UserProductDto } from '@data/dtos/products/product.dto';
 import { UserProductCreateUsecase } from '@domain/usecases/userProduct/create';
@@ -7,6 +7,7 @@ import { UserProductGetUsecase } from '@domain/usecases/userProduct/getById';
 import { UserProductListByUserIdUsecase } from '@domain/usecases/userProduct/getUserProductByUserId';
 import { UserProductListUsecase } from '@domain/usecases/userProduct/getAll';
 import { UserProductDeleteUsecase } from '@domain/usecases/userProduct/delete';
+import { UserProductUpdateUsecase } from '@domain/usecases/userProduct/update';
 
 @JsonController('/user-product')
 export class UserProductController {
@@ -15,6 +16,7 @@ export class UserProductController {
   public userProductListByUserIdUsecase = Container.get(UserProductListByUserIdUsecase);
   public userProductListUsecase = Container.get(UserProductListUsecase);
   public userProductDeleteUsecase = Container.get(UserProductDeleteUsecase);
+  public userProductUpdateUsecase = Container.get(UserProductUpdateUsecase);
 
   @Post('/user/:userId/product/:productId')
   @UseBefore(ValidationMiddleware(UserProductDto))
@@ -50,5 +52,13 @@ export class UserProductController {
   @HttpCode(200)
   async deleteProduct(@Param('id') id: number) {
     return await this.userProductDeleteUsecase.call(id);
+  }
+
+  @Put('/:id')
+  @UseBefore(ValidationMiddleware(UserProductDto))
+  @Authorized()
+  @HttpCode(200)
+  async updateUserProduct(@Param('id') id: number, @Body() data: UserProductDto) {
+    return await this.userProductUpdateUsecase.call(id, data);
   }
 }

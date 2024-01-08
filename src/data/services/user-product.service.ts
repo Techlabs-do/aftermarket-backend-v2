@@ -59,30 +59,15 @@ export class UserProductService {
     });
     return userProduct;
   }
-  // public async getAllProducts() {
-  //   const products = await this.products.findMany({
-  //     include: {
-  //       product_has_images: true,
-  //       Product_has_options: true,
-  //     },
-  //   });
-  //   return products;
-  // }
-  // public async deleteById(id: number) {
-  //   const deletedProduct = await this.products.delete({
-  //     where: {
-  //       id,
-  //     },
-  //   });
-  //   return deletedProduct;
-  // }
-  // public async updateProduct(id: number, data: ProductDto) {
-  //   const updatedProduct = await this.products.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data,
-  //   });
-  //   return updatedProduct;
-  // }
+  public async update(id: number, code: string) {
+    const updatedProduct = await this.userHasProducts.update({
+      where: {
+        id,
+      },
+      data: {
+        code,
+      },
+    });
+    return updatedProduct;
+  }
 }
