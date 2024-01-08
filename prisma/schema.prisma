@@ -22,24 +22,30 @@ enum RECIEPT_STATUS {
   DONE
 }
 
+////////////////////////////////////////////////////////////////////
+// AUTH
 model LoginUsers {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
 }
 
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+// CUSTOMERS/VENDORS and mapping with PRODUCT
 model Users {
-  id            Int            @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   type          USER_TYPES
   company_name  String?
   website       String?
   email         String?
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @default(now())
+  created_at    DateTime          @default(now())
+  updated_at    DateTime          @default(now())
   phones        Phones[]
   addresses     Addresses[]
   reciepts      Reciepts[]
-  user_products UserProducts[]
+  user_products UserHasProducts[]
 }
 
 model Phones {
@@ -58,30 +64,32 @@ model Addresses {
   users   Users  @relation(fields: [user_id], references: [id])
 }
 
-model Reciepts {
-  id           Int            @id @default(autoincrement())
-  type         RECIEPT_TYPES
-  status       RECIEPT_STATUS
-  currency     String
+model UserHasProducts {
+  id           Int           @id @default(autoincrement())
+  code         String
   user_id      Int
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @default(now())
-  users        Users          @relation(fields: [user_id], references: [id])
+  products_id  Int
   reciept_item RecieptItem[]
+  users        Users         @relation(fields: [user_id], references: [id])
+  products     Products      @relation(fields: [products_id], references: [id])
 }
 
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+// PRODUCTS and SPECS
 model Products {
-  id              Int              @id @default(autoincrement())
-  name            String
-  oem             String?
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now())
-  product_images  ProductImages[]
-  user_products   UserProducts[]
-  Product_options ProductOptions[]
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  oem                 String?
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @default(now())
+  user_products       UserHasProducts[]
+  product_has_images  ProductHasImages[]
+  Product_has_options ProductHasOptions[]
 }
 
-model ProductImages {
+model ProductHasImages {
   id         Int      @id @default(autoincrement())
   url        String
   product_id Int
@@ -90,27 +98,7 @@ model ProductImages {
   products   Products @relation(fields: [product_id], references: [id])
 }
 
-model UserProducts {
-  id           Int           @id @default(autoincrement())
-  code         String
-  user_id      Int
-  products_id  Int
-  products     Products      @relation(fields: [products_id], references: [id])
-  users        Users         @relation(fields: [user_id], references: [id])
-  reciept_item RecieptItem[]
-}
-
-model RecieptItem {
-  id              Int          @id @default(autoincrement())
-  price           Float
-  quantity        Int
-  user_product_id Int
-  reciept_id      Int
-  reciepts        Reciepts     @relation(fields: [reciept_id], references: [id])
-  user_products   UserProducts @relation(fields: [user_product_id], references: [id])
-}
-
-model ProductOptions {
+model ProductHasOptions {
   id             Int      @id @default(autoincrement())
   year           String?
   chasses_number String?
@@ -118,35 +106,63 @@ model ProductOptions {
   options_id     Int
   regions_id     Int
   cabin_id       Int?
+  cabins         Cabins?  @relation(fields: [cabin_id], references: [id])
   products       Products @relation(fields: [product_id], references: [id])
   options        Options  @relation(fields: [options_id], references: [id])
   regions        Regions  @relation(fields: [regions_id], references: [id])
-  cabins         Cabins?  @relation(fields: [cabin_id], references: [id])
 }
 
 model Options {
-  id              Int              @id @default(autoincrement())
+  id              Int                 @id @default(autoincrement())
   option          String
   parent_id       Int?
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now())
-  options         Options[]        @relation("ParentOption")
-  parent          Options?         @relation("ParentOption", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product_options ProductOptions[]
+  created_at      DateTime            @default(now())
+  updated_at      DateTime            @default(now())
+  product_options ProductHasOptions[]
+  options         Options[]           @relation("ParentOption")
+  parent          Options?            @relation("ParentOption", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Regions {
-  id              Int              @id @default(autoincrement())
+  id              Int                 @id @default(autoincrement())
   region          String
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now())
-  product_options ProductOptions[]
+  created_at      DateTime            @default(now())
+  updated_at      DateTime            @default(now())
+  product_options ProductHasOptions[]
 }
 
 model Cabins {
-  id              Int              @id @default(autoincrement())
+  id              Int                 @id @default(autoincrement())
   cabin           String
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @default(now())
-  product_options ProductOptions[]
+  created_at      DateTime            @default(now())
+  updated_at      DateTime            @default(now())
+  product_options ProductHasOptions[]
 }
+
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+// RECIEPTS
+model Reciepts {
+  id           Int            @id @default(autoincrement())
+  type         RECIEPT_TYPES
+  status       RECIEPT_STATUS
+  currency     String
+  user_id      Int
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now())
+  reciept_item RecieptItem[]
+  users        Users          @relation(fields: [user_id], references: [id])
+}
+
+model RecieptItem {
+  id              Int             @id @default(autoincrement())
+  price           Float
+  quantity        Int
+  user_product_id Int
+  reciept_id      Int
+  reciepts        Reciepts        @relation(fields: [reciept_id], references: [id])
+  user_products   UserHasProducts @relation(fields: [user_product_id], references: [id])
+}
+
+////////////////////////////////////////////////////////////////////

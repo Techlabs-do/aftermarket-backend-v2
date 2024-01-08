@@ -18,7 +18,7 @@ export class ProductService {
         id,
       },
       include: {
-        product_images: true,
+        product_has_images: true,
       },
     });
     return product;
@@ -26,7 +26,7 @@ export class ProductService {
   public async getAllProducts() {
     const products = await this.products.findMany({
       include: {
-        product_images: true,
+        product_has_images: true,
       },
     });
     return products;
