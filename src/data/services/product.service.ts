@@ -20,6 +20,7 @@ export class ProductService {
       include: {
         product_has_images: true,
         Product_has_options: true,
+        user_products: true,
       },
     });
     return product;
@@ -29,6 +30,7 @@ export class ProductService {
       include: {
         product_has_images: true,
         Product_has_options: true,
+        user_products: true,
       },
     });
     return products;
