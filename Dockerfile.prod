@@ -1,13 +1,20 @@
+# NodeJS Version 20
 FROM node:20-bullseye-slim
 
+# Copy Dir
 COPY . ./app
 
+# Work to Dir
 WORKDIR /app
 
+
+# Install the project dependencies using Yarn
 RUN yarn install
+
+# Set Env
+ENV NODE_ENV development
 
 EXPOSE 3000
 
-RUN yarn build
-
-CMD ["npm", "run", "start:prod"]
+# Start app
+CMD ["yarn", "run", "start:prod"]

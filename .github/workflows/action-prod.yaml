@@ -9,8 +9,8 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: techlabscc/after-market-v2:after-market-v2-prod
-      CONTAINER_NAME: after-market-v2-prod
+      IMAGE_NAME: techlabscc/aftermarket-backend-v2:prod
+      CONTAINER_NAME: aftermarket-backend-v2-prod
 
     steps:
       - name: Checkout Code
@@ -42,10 +42,7 @@ jobs:
           envkey_LOG_DIR: '../../../logs'
 
       - name: Build image
-        run: docker compose --file ./docker-compose.prod.yml up -d
-
-      - name: Tag a new image
-        run: docker tag ${{ env.CONTAINER_NAME }}:latest ${{ env.IMAGE_NAME }}
+        run: docker build . -f ./Dockerfile.prod -t ${{ env.IMAGE_NAME }}
 
       - name: Push Image
         run: docker push ${{ env.IMAGE_NAME }}
