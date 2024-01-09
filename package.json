@@ -11,7 +11,7 @@
     "start:uat": "cross-env NODE_ENV=uat nodemon",
     "start:prod": "cross-env NODE_ENV=production nodemon",
     "start:production": "npm run build && cross-env NODE_ENV=production node dist/app/server.js",
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "dev": "cross-env NODE_ENV=development node dist/server.js",
     "build": "swc src -d dist --source-maps --copy-files",
     "build:tsc": "tsc && tsc-alias",
     "test": "jest --forceExit --detectOpenHandles",
