@@ -41,6 +41,8 @@ export class CustomerVendorService {
       include: {
         addresses: true,
         phones: true,
+        reciepts: true,
+        user_products: true,
       },
     });
     return user;
@@ -54,6 +56,8 @@ export class CustomerVendorService {
       include: {
         addresses: true,
         phones: true,
+        reciepts: true,
+        user_products: true,
       },
     });
     return user;
@@ -67,6 +71,8 @@ export class CustomerVendorService {
       include: {
         addresses: true,
         phones: true,
+        reciepts: true,
+        user_products: true,
       },
     });
     return user;

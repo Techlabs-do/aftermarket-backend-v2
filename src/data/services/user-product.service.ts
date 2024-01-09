@@ -25,6 +25,7 @@ export class UserProductService {
       include: {
         users: true,
         products: true,
+        reciept_item: true,
       },
     });
     return userProduct;
@@ -37,6 +38,7 @@ export class UserProductService {
       include: {
         products: true,
         users: true,
+        reciept_item: true,
       },
     });
     return userProduct;
@@ -47,6 +49,7 @@ export class UserProductService {
       include: {
         users: true,
         products: true,
+        reciept_item: true,
       },
     });
     return userProduct;
