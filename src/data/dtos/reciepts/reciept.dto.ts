@@ -11,8 +11,21 @@ export class RecieptDto {
   @IsString()
   readonly currency: string;
 }
+export class RecieptItemDto {
+  @IsNumber()
+  readonly price: number;
+  @IsNumber()
+  readonly quantity: number;
+}
 
 export class ExtendedRecieptDto extends RecieptDto {
   @IsNumber()
   readonly user_id: number;
+}
+export class ExtendedRecieptItemDto extends RecieptItemDto {
+  @IsNumber()
+  readonly reciept_id: number;
+
+  @IsNumber()
+  readonly user_product_id: number;
 }
