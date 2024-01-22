@@ -15,19 +15,25 @@ import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { AuthMiddleware } from '@infrastructure/middlewares/auth.middleware';
 import { ErrorMiddleware } from '@infrastructure/middlewares/error.middleware';
 import { useExpressServer, getMetadataArgsStorage } from 'routing-controllers';
-import { NODE_ENV, PORT, LOG_FORMAT, CREDENTIALS, SENTRY_DSN } from '@config/environments';
+import { NODE_ENV, PORT, LOG_FORMAT, CREDENTIALS, JWT_SECRET } from '@config/environments';
 import { init, Handlers, Integrations, autoDiscoverNodePerformanceMonitoringIntegrations } from '@sentry/node';
+import database from '@config/database';
+import expressSession from 'express-session';
+import bcrypt from 'bcrypt';
+import { Strategy as LocalStrategy } from 'passport-local';
 
+import passport from 'passport';
 export class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
+  public user: any;
 
   constructor(Controllers: Function[]) {
     this.app = express();
+    this.configurePassport();
 
     init({
-      dsn: SENTRY_DSN,
       environment: NODE_ENV,
       sampleRate: NODE_ENV ? 1 : 0.75,
       beforeSend(event) {
@@ -86,6 +92,50 @@ export class App {
         },
       }),
     );
+    this.app.use(
+      expressSession({
+        secret: JWT_SECRET,
+        resave: false,
+        saveUninitialized: false,
+      }),
+    );
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+  }
+
+  private configurePassport() {
+    passport.use(
+      new LocalStrategy(async (username, password, done) => {
+        try {
+          const user = await database.instance.loginUsers.findFirst({
+            where: { email: username },
+          });
+
+          if (!user || !bcrypt.compareSync(password, user.password)) {
+            return done(null, false, { message: 'Incorrect username or password' });
+          }
+
+          return done(null, user);
+        } catch (error) {
+          return done(error);
+        }
+      }),
+    );
+
+    passport.serializeUser((user: any, done) => {
+      done(null, user.id);
+    });
+
+    passport.deserializeUser(async (id, done) => {
+      try {
+        const user = await database.instance.loginUsers.findFirst({
+          where: { id },
+        });
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    });
   }
 
   private initializeRoutes(controllers: Function[]) {
@@ -94,7 +144,7 @@ export class App {
         origin: '*',
         credentials: CREDENTIALS,
       },
-      routePrefix: '/v1/api',
+      routePrefix: '/v2/api',
       controllers: controllers,
       defaultErrorHandler: false,
       authorizationChecker: AuthMiddleware,
@@ -109,7 +159,7 @@ export class App {
 
     const routingControllersOptions = {
       controllers: controllers,
-      routePrefix: '/v1/api',
+      routePrefix: '/v2/api',
     };
 
     const storage = getMetadataArgsStorage();
@@ -125,8 +175,8 @@ export class App {
       },
       info: {
         version: pkg.version,
-        title: `SeekInvest Backend API - ENV: ${NODE_ENV}`,
-        description: 'SeekInvest Backend API generated with `routing-controllers-openapi`',
+        title: `AfterMarket - ENV: ${NODE_ENV}`,
+        description: 'AfterMarket Backend API generated with `routing-controllers-openapi`',
       },
     });
 
